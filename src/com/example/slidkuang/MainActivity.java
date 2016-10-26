@@ -26,7 +26,7 @@ private static int padding=80;
 private static int right=0;
 private LinearLayout.LayoutParams menuparams; 
 private  static int leftmargin;
-private View content,menu;
+private View menu,main;
 private int screenwidth;
 private int left;
 private float downx;
@@ -40,10 +40,10 @@ public static final int SNAP_VELOCITY = 200;
     protected void onCreate(Bundle savedInstanceState)   {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       content=findViewById(R.id.content);
-        menu=findViewById(R.id.menu);
+      menu=findViewById(R.id.menu);
+        main=findViewById(R.id.main);
         init();
-        content.setOnTouchListener(this);
+        main.setOnTouchListener(this);
         
     }
     public void init(){
@@ -66,11 +66,15 @@ public static final int SNAP_VELOCITY = 200;
     			distance=(int)(movex-downx);
     			if(ismenu){
     				menuparams.leftMargin=right+distance;
-    		Log.i("lkk", "ssb");
-    			}
+    		}
     			else{
     				menuparams.leftMargin=left+distance;
     			}
+    			 if (menuparams.leftMargin < left) {  
+    	                menuparams.leftMargin = left;  
+    	            } else if (menuparams.leftMargin > right) {  
+    	                menuparams.leftMargin = right;  
+    	            }  
     			 menu.setLayoutParams(menuparams);  
     			break;
     		case MotionEvent.ACTION_UP:
@@ -80,7 +84,7 @@ public static final int SNAP_VELOCITY = 200;
     					showcontent();
     				}
     			}
-    			else if(ismenu&&(onx-downx>0)){
+    			else if(!ismenu&&(onx-downx>0)){
     				if(wantmenu()){
     					showmenu();
     				}
